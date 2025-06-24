@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
-    justifyContent: 'space-between', // Joga o botão para o final
+    justifyContent: 'space-between',
   },
   content: {
     flex: 1,
@@ -46,15 +46,14 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'center',
     marginTop: 15,
-    lineHeight: 24, // Melhora a legibilidade
+    lineHeight: 24, 
   },
-  // Estilo para o nosso botão customizado
   button: {
     backgroundColor: '#10b981',
     padding: 15,
     borderRadius: 15,
     alignItems: 'center',
-    marginBottom: 20, // Espaço da borda inferior
+    marginBottom: 20,
   },
   buttonText: {
     color: '#fff',

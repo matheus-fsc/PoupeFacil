@@ -7,7 +7,7 @@ import SelectionListItem from '../../src/components/SelectionList';
 
 
 export const RECURRING_EXPENSES = [
-    { id: '1', name: 'Netflix', category: 'Assinaturas', icon: 'tv-outline' },
+    { id: 'streaming', name: 'Serviços de Streaming', category: 'Assinaturas', icon: 'tv-outline' },
     { id: '2', name: 'Spotify', category: 'Assinaturas', icon: 'musical-notes-outline' },
     { id: '3', name: 'Aluguel', category: 'Moradia', icon: 'home-outline' },
     { id: '4', name: 'Conta de Luz', category: 'Contas', icon: 'bulb-outline' },

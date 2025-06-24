@@ -6,29 +6,13 @@ import { Tabs, useRouter, useSegments } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
-// 1. Importamos nossa função de inicialização do Banco de Dados
-import { initDB } from '../src/database/storage';
-
 // Componente principal do Layout
 export default function RootLayout() {
-  // 2. Adicionamos um novo estado para controlar a inicialização do DB
-  const [dbInitialized, setDbInitialized] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState(null);
   const router = useRouter();
   const segments = useSegments();
 
-  // 3. Este useEffect agora cuida de TODA a preparação do app
   useEffect(() => {
-    // Prepara o banco de dados
-    initDB()
-      .then(() => {
-        setDbInitialized(true);
-        console.log("Banco de dados pronto.");
-      })
-      .catch(err => {
-        console.error("Erro fatal na inicialização do DB:", err);
-      });
-    
     // Verifica o status do onboarding
     const checkOnboardingStatus = async () => {
       try {
@@ -47,8 +31,8 @@ export default function RootLayout() {
 
   // Este useEffect cuida APENAS do redirecionamento
   useEffect(() => {
-    // Não faça nada até que o DB e o Onboarding estejam verificados
-    if (onboardingCompleted === null || !dbInitialized) {
+    // Não faça nada até que o Onboarding esteja verificado
+    if (onboardingCompleted === null) {
       return;
     }
     
@@ -60,10 +44,10 @@ export default function RootLayout() {
       router.replace('/');
     }
 
-  }, [onboardingCompleted, dbInitialized, segments]);
+  }, [onboardingCompleted, segments]);
 
-  // 4. A tela de carregamento agora espera por AMBAS as tarefas
-  if (onboardingCompleted === null || !dbInitialized) {
+  // Tela de carregamento espera só pelo onboardingCompleted
+  if (onboardingCompleted === null) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#10b981" />

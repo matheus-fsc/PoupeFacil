@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SQLite from 'expo-sqlite'; // Adicione este import
 import * as Updates from 'expo-updates';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import PrimaryButton from '../src/components/PrimaryButton';
@@ -22,30 +21,18 @@ export default function SettingsScreen() {
     }
   };
 
-  // Função para deletar o banco de dados (apaga todos os dados)
+  // Função para deletar todos os dados locais (sem SQLite)
   const handleDeleteDatabase = async () => {
     try {
-      const db = SQLite.openDatabase('poupefacil.db');
-      db.transaction(tx => {
-        tx.executeSql(
-          'DROP TABLE IF EXISTS expenses;',
-          [],
-          () => {
-            Alert.alert(
-              "Banco de Dados Apagado",
-              "Todos os dados foram removidos.",
-              [{ text: "OK", onPress: () => Updates.reloadAsync() }]
-            );
-          },
-          (_, error) => {
-            Alert.alert("Erro", "Não foi possível apagar o banco de dados.");
-            console.error("Erro ao apagar banco de dados", error);
-          }
-        );
-      });
+      await AsyncStorage.clear();
+      Alert.alert(
+        "Dados Apagados",
+        "Todos os dados locais foram removidos.",
+        [{ text: "OK", onPress: () => Updates.reloadAsync() }]
+      );
     } catch (e) {
-      Alert.alert("Erro", "Não foi possível apagar o banco de dados.");
-      console.error("Erro ao apagar banco de dados", e);
+      Alert.alert("Erro", "Não foi possível apagar os dados locais.");
+      console.error("Erro ao apagar dados locais", e);
     }
   };
 
@@ -60,14 +47,14 @@ export default function SettingsScreen() {
           onPress={handleResetOnboarding}
         />
         <PrimaryButton
-          title="Apagar Banco de Dados"
+          title="Apagar Dados Locais"
           onPress={handleDeleteDatabase}
         />
         <Text style={styles.devDescription}>
           Este botão limpa o status de conclusão do onboarding e reinicia o app. Use para testar o fluxo inicial novamente.
         </Text>
         <Text style={styles.devDescription}>
-          O botão "Apagar Banco de Dados" remove todos os dados salvos no app.
+          O botão "Apagar Dados Locais" remove todos os dados salvos no app.
         </Text>
       </View>
 

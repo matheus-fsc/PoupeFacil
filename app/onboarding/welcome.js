@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'center',
     marginTop: 15,
-    lineHeight: 24, 
+    lineHeight: 24,
   },
   button: {
     backgroundColor: '#10b981',

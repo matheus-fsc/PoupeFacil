@@ -13,7 +13,8 @@ function RootLayoutNav() {
 
     const inTabsGroup = segments[0] === '(tabs)';
     
-    const allowedRootRoutes = ['manual-form', 'qr-scanner', 'transaction-list'];
+    // CORREÇÃO: Removido 'qr-scanner' da lista de exceções globais.
+    const allowedRootRoutes = ['manual-form', 'transaction-list'];
     const isExceptionRoute = allowedRootRoutes.includes(segments[0]);
 
     if (onboardingCompleted) {
@@ -50,14 +51,7 @@ function RootLayoutNav() {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="qr-scanner"
-        options={{
-          presentation: 'modal',
-          headerShown: false,
-        }}
-      />
-      {/* 2. CONFIGURAÇÃO DA NOVA TELA DE LISTA */}
+      {/* CORREÇÃO: Removida a declaração de "qr-scanner" que causava o aviso. */}
       <Stack.Screen
         name="transaction-list"
         options={{

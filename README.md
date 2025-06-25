@@ -111,6 +111,6 @@ Distribuído sob a licença MIT. Veja `LICENSE.txt` para mais informações.
 
 ## 📫 Contato
 
-Matheus - [@matheus-fsc](https://github.com/matheus-fsc) - `seu_email@exemplo.com`
+Matheus - [@matheus-fsc](https://github.com/matheus-fsc) - `matheusvgp29@gmail.com`
 
 Link do Projeto: [https://github.com/matheus-fsc/PoupeFacil](https://github.com/matheus-fsc/PoupeFacil)

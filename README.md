@@ -4,57 +4,55 @@
 ![Expo: 51](https://img.shields.io/badge/Expo-~51-blueviolet.svg)
 ![Works with Expo Go](https://img.shields.io/badge/Runs%20with%20Expo%20Go-✅-white.svg)
 
-Um aplicativo de finanças pessoais focado em simplicidade e uma experiência de usuário limpa, construído com React Native e Expo para a disciplina de Desenvolvimento Mobile da UNIFEI-Itabira.
+Um aplicativo de finanças pessoais focado em simplicidade e uma experiência de usuário limpa. Desenvolvido com **React Native** e **Expo**, como parte da disciplina de **Desenvolvimento Mobile** da **UNIFEI - Itabira**.
 
 ---
 
 ## 📖 Tabela de Conteúdos
 
-* [Sobre o Projeto](#-sobre-o-projeto)
-* [✨ Funcionalidades](#-funcionalidades)
-* [🛠️ Tecnologias Utilizadas](#-tecnologias-utilizadas)
-* [🚀 Começando](#-começando)
-* [📁 Estrutura de Arquivos](#-estrutura-de-arquivos)
-* [📜 Licença](#-licença)
-* [📫 Contato](#-contato)
+- [🎯 Sobre o Projeto](#-sobre-o-projeto)
+- [✨ Funcionalidades](#-funcionalidades)
+- [🛠️ Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [🚀 Começando](#-começando)
+- [📁 Estrutura de Arquivos](#-estrutura-de-arquivos)
+- [📜 Licença](#-licença)
+- [📫 Contato](#-contato)
 
 ---
 
 ## 🎯 Sobre o Projeto
 
-O **PoupeFácil** nasceu da necessidade de ter um controle financeiro rápido e descomplicado. O aplicativo guia o usuário por um processo de configuração inicial (`onboarding`) para cadastrar as suas despesas recorrentes e, a partir daí, oferece uma visão clara e dashboards interativos para entender os seus hábitos financeiros.
+O **PoupeFácil** nasceu da necessidade de um controle financeiro rápido e descomplicado. O app guia o usuário por um onboarding simples para cadastrar suas despesas recorrentes e, a partir disso, oferece uma visão clara por meio de dashboards interativos que ajudam a entender seus hábitos financeiros.
 
-Toda a persistência de dados é feita localmente através do `AsyncStorage`, garantindo que o app seja leve, rápido e compatível com o Expo Go, com planos futuros de sincronização com uma API na nuvem.
+Atualmente, os dados são armazenados localmente usando `AsyncStorage`, o que garante leveza e compatibilidade com o **Expo Go**. No futuro, planeja-se a sincronização com uma API na nuvem.
 
 ---
 
 ## ✨ Funcionalidades
 
-- **Fluxo de Onboarding Guiado**: Uma experiência limpa para o usuário configurar as suas finanças pela primeira vez, permitindo o cadastro de múltiplas despesas personalizadas.
-- **Gestão Completa de Transações**: Adicione, consulte, edite e apague qualquer transação, seja ela um gasto fixo ou variável.
-- **Dashboard de Relatórios Interativo**:
-  - Filtro por período (Mês Atual / Últimos 90 dias).
-  - Gráfico de Barras comparando Ganhos vs. Gastos.
-  - Gráfico de Pizza com a distribuição de despesas por categoria.
-- **Scanner de QR Code**: Funcionalidade para adicionar despesas de forma rápida a partir de notas fiscais.
-- **Persistência de Dados Local**: Utiliza `AsyncStorage` para salvar os dados de forma segura no dispositivo.
-- **Navegação Moderna**: Construído com `expo-router`, com separação de layouts para onboarding, telas modais e o app principal (com abas).
-- **Gerenciamento de Estado Global**: Utiliza a Context API do React para um controle de estado fluido e sem recarregamentos desnecessários.
-- **Arquitetura Escalável**: Código organizado em camadas de serviços, componentes reutilizáveis (`InputModal`, `EditTransactionModal`, etc.) e contextos.
+- ✅ **Onboarding Guiado** para configurar as finanças pela primeira vez.
+- 💸 **Gestão de Transações**: adicionar, editar, excluir e consultar gastos fixos e variáveis.
+- 📊 **Dashboard Interativo**:
+  - Filtro por período (mês atual e últimos 90 dias)
+  - Gráfico de barras (Ganhos vs. Gastos)
+  - Gráfico de pizza (categorias de despesas)
+- 📷 **Scanner de QR Code** para inserir despesas a partir de notas fiscais.
+- 💾 **Persistência local** com `AsyncStorage`.
+- 🧭 **Navegação moderna** com `expo-router` e layouts distintos (onboarding, modais, principal).
+- 🌐 **Gerenciamento de estado global** com Context API.
+- 🧱 **Arquitetura escalável** com serviços, componentes reutilizáveis e separação clara de contextos.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-Este projeto foi construído com as seguintes tecnologias:
-
-* **[React Native](https://reactnative.dev/)**: Framework para desenvolvimento de aplicativos móveis nativos.
-* **[Expo](https://expo.dev/)**: Plataforma e conjunto de ferramentas para facilitar o desenvolvimento com React Native.
-* **[Expo Router](https://docs.expo.dev/router/introduction/)**: Sistema de roteamento baseado em ficheiros para navegação.
-* **[React Context API](https://react.dev/learn/passing-data-deeply-with-context)**: Para gerenciamento de estado global.
-* **[AsyncStorage](https://react-native-async-storage.github.io/async-storage/)**: Para persistência de dados local (chave-valor).
-* **[React Native Chart Kit](https://github.com/indiespirit/react-native-chart-kit)**: Para a criação dos gráficos de Barras e Pizza.
-* **[React Native SVG](https://github.com/react-native-svg/react-native-svg)**: Dependência para os gráficos.
+- **[React Native](https://reactnative.dev/)**: Framework para desenvolvimento de apps nativos.
+- **[Expo](https://expo.dev/)**: Plataforma de ferramentas para facilitar o desenvolvimento.
+- **[Expo Router](https://docs.expo.dev/router/introduction/)**: Navegação baseada em arquivos.
+- **[React Context API](https://react.dev/learn/passing-data-deeply-with-context)**: Gerenciamento de estado.
+- **[AsyncStorage](https://react-native-async-storage.github.io/async-storage/)**: Persistência local.
+- **[React Native Chart Kit](https://github.com/indiespirit/react-native-chart-kit)**: Gráficos de barra e pizza.
+- **[React Native SVG](https://github.com/react-native-svg/react-native-svg)**: Dependência gráfica para os gráficos.
 
 ---
 
@@ -62,55 +60,50 @@ Este projeto foi construído com as seguintes tecnologias:
 
 Para executar este projeto localmente, siga os passos abaixo:
 
-1.  **Clone o repositório**
-    ```bash
-    git clone [https://github.com/matheus-fsc/PoupeFacil.git](https://github.com/matheus-fsc/PoupeFacil.git)
-    ```
-2.  **Navegue até o diretório do projeto**
-    ```bash
-    cd PoupeFacil
-    ```
-3.  **Instale as dependências**
-    ```bash
-    npm install
-    ```
-    _ou se você usa Yarn:_
-    ```bash
-    yarn install
-    ```
-4.  **Inicie o servidor de desenvolvimento do Expo**
-    ```bash
-    npx expo start
-    ```
-5.  **Execute no seu dispositivo**: Escaneie o QR Code com o aplicativo Expo Go (disponível para [Android](https://play.google.com/store/apps/details?id=host.exp.exponent) e [iOS](https://apps.apple.com/us/app/expo-go/id982107779)).
+```bash
+# Clone o repositório
+git clone https://github.com/matheus-fsc/PoupeFacil.git
+
+# Acesse a pasta do projeto
+cd PoupeFacil
+
+# Instale as dependências
+npm install
+# ou
+yarn install
+
+# Inicie o projeto com Expo
+npx expo start
+```
+
+Depois, escaneie o QR Code com o app **Expo Go** ([Android](https://play.google.com/store/apps/details?id=host.exp.exponent) | [iOS](https://apps.apple.com/us/app/expo-go/id982107779)).
 
 ---
 
 ## 📁 Estrutura de Arquivos
 
-A estrutura de ficheiros foi pensada para ser escalável e de fácil manutenção:
-
-
-
+```bash
 PoupeFacil/
-├── app/ # Contém todas as rotas e layouts do Expo Router
-│ ├── (tabs)/ # Grupo de rotas para as telas principais com Tab Bar
-│ │ ├── _layout.jsx
-│ │ ├── index.jsx
-│ │ ├── add.js
-│ │ ├── reports.js
-│ │ └── settings.js
-│ ├── onboarding/ # Grupo de rotas para o fluxo de onboarding
-│ ├── manual-form.js # Tela modal para adicionar/editar transações
-│ ├── transaction-list.js # Tela modal para listar e gerir transações
-│ └── qr-scanner.js # Tela modal para o leitor de QR Code
-├── assets/ # Imagens (ícone, splash), fontes e outros ficheiros estáticos
+├── app/                  # Rotas e layouts do Expo Router
+│   ├── (tabs)/           # Telas principais com Tab Bar
+│   │   ├── _layout.jsx
+│   │   ├── index.jsx
+│   │   ├── add.js
+│   │   ├── reports.js
+│   │   └── settings.js
+│   ├── onboarding/       # Fluxo de onboarding
+│   ├── manual-form.js    # Modal: adicionar/editar transações
+│   ├── transaction-list.js # Modal: gerenciar transações
+│   └── qr-scanner.js     # Modal: leitor de QR Code
+├── assets/               # Ícones, splash, fontes
 ├── src/
-│ ├── components/ # Componentes React reutilizáveis
-│ ├── context/ # Provedores de Contexto (AuthContext.js)
-│ └── services/ # Camada de serviços (storage.js)
-└── eas.json # Configuração para builds com EAS
+│   ├── components/       # Componentes reutilizáveis
+│   ├── context/          # Contextos (ex: AuthContext.js)
+│   └── services/         # Serviços (ex: storage.js)
+├── eas.json              # Configuração do EAS
 └── package.json
+```
+
 ---
 
 ## 📜 Licença
@@ -121,8 +114,6 @@ Distribuído sob a licença MIT. Veja `LICENSE.txt` para mais informações.
 
 ## 📫 Contato
 
-Matheus - [@matheus-fsc](https://github.com/matheus-fsc) - `matheusvgp29@gmail.com`
-
-Link do Projeto: [https://github.com/matheus-fsc/PoupeFacil](https://github.com/matheus-fsc/PoupeFacil)
-
-
+Matheus - [@matheus-fsc](https://github.com/matheus-fsc)  
+📧 `matheusvgp29@gmail.com`  
+🔗 Projeto: [https://github.com/matheus-fsc/PoupeFacil](https://github.com/matheus-fsc/PoupeFacil)

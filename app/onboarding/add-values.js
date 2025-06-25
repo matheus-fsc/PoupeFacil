@@ -1,6 +1,6 @@
+import { saveRecurringExpenses } from '../../src/services/storage';
 import { useAuth } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -54,7 +54,7 @@ function useExpenseQueue() {
 
     console.log("Iniciando salvamento das despesas:", finalExpenses);
     try {
-      await AsyncStorage.setItem('user_expenses', JSON.stringify(finalExpenses));
+      await saveRecurringExpenses(finalExpenses);
       await completeOnboarding(); 
     } catch (e) {
       console.error("Falha ao finalizar onboarding", e);

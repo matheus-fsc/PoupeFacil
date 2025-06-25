@@ -4,7 +4,7 @@ import { ActivityIndicator, Dimensions, SafeAreaView, ScrollView, StyleSheet, Te
 import { BarChart, PieChart } from 'react-native-chart-kit';
 import { getRecurringExpenses, getTransactions } from '../../src/services/storage';
 
-// Componente para a legenda do gráfico de pizza
+// legenda grafico de pizza
 const ChartLegend = ({ data }) => (
   <View style={styles.legendContainer}>
     {data.map((item) => (
@@ -18,7 +18,7 @@ const ChartLegend = ({ data }) => (
 );
 
 export default function ReportsScreen() {
-  const [period, setPeriod] = useState('monthly'); // 'monthly' ou 'quarterly'
+  const [period, setPeriod] = useState('monthly'); 
   const [isLoading, setIsLoading] = useState(true);
   const [reportData, setReportData] = useState(null);
 
@@ -44,12 +44,12 @@ export default function ReportsScreen() {
         const ninetyDaysAgo = new Date();
         ninetyDaysAgo.setDate(now.getDate() - 90);
 
-        // Filtra transações baseadas no período
+        
         const filteredTransactions = manualTransactions.filter(t => {
             const transactionDate = new Date(t.date);
             if (period === 'monthly') {
                 return transactionDate >= firstDayOfMonth;
-            } else { // quarterly
+            } else { 
                 return transactionDate >= ninetyDaysAgo;
             }
         });
@@ -69,10 +69,10 @@ export default function ReportsScreen() {
             }
         });
 
-        // Inclui despesas recorrentes no total mensal
+        
         const fixedExpenses = period === 'monthly' 
             ? recurring.reduce((sum, r) => sum + r.totalValue, 0)
-            : recurring.reduce((sum, r) => sum + r.totalValue, 0) * 3; // Estimativa para 90 dias
+            : recurring.reduce((sum, r) => sum + r.totalValue, 0) * 3; 
         
         recurring.forEach(r => {
             const category = r.name;
@@ -82,7 +82,7 @@ export default function ReportsScreen() {
 
         const totalExpenses = variableExpenses + fixedExpenses;
 
-        // Formata dados para o gráfico de pizza
+        
         const pieData = Object.entries(expensesByCategory)
             .map(([category, value], index) => ({
                 name: category,
@@ -105,7 +105,7 @@ export default function ReportsScreen() {
       };
 
       loadData();
-    }, [period]) // Roda novamente quando o período muda
+    }, [period]) 
   );
   
   const sliceColors = ['#10b981', '#ef4444', '#3b82f6', '#f97316', '#8b5cf6', '#eab308'];

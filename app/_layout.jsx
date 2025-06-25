@@ -1,48 +1,25 @@
-// Arquivo: app/_layout.jsx (VERSÃO CORRIGIDA)
-
+import { useAuth, AuthProvider } from '../context/AuthContext'; 
 import { Stack, useRouter, useSegments } from 'expo-router';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-export default function RootLayout() {
-  const [onboardingCompleted, setOnboardingCompleted] = useState(null);
+function RootLayoutNav() {
+  const { onboardingCompleted } = useAuth(); 
   const router = useRouter();
   const segments = useSegments();
 
   useEffect(() => {
-    const checkOnboardingStatus = async () => {
-      try {
-        const value = await AsyncStorage.getItem('onboarding_completed');
-        setOnboardingCompleted(value === 'true');
-      } catch (e) {
-        setOnboardingCompleted(false);
-      }
-    };
-    checkOnboardingStatus();
-  }, []);
-
-  useEffect(() => {
     if (onboardingCompleted === null) return;
-    
-    // Verificamos se o usuário está em alguma tela dentro do grupo (tabs) ou onboarding
+
     const inTabsGroup = segments[0] === '(tabs)';
-    const inOnboardingGroup = segments[0] === 'onboarding'; // <-- Adicionamos esta variável
+    const inOnboardingGroup = segments[0] === 'onboarding';
 
-    // Lógica de redirecionamento CORRIGIDA
     if (onboardingCompleted && !inTabsGroup) {
-      // Se o onboarding foi concluído e o usuário NÃO está no grupo de abas,
-      // mande-o para a tela inicial do app.
       router.replace('/(tabs)');
-
     } else if (!onboardingCompleted && !inOnboardingGroup) {
-      // Se o onboarding NÃO foi concluído E o usuário NÃO está no fluxo de onboarding,
-      // aí sim, mande-o para o início do fluxo.
       router.replace('/onboarding/welcome');
     }
-
   }, [onboardingCompleted, segments]);
-
 
   if (onboardingCompleted === null) {
     return (
@@ -52,11 +29,18 @@ export default function RootLayout() {
     );
   }
 
-  // Este layout agora usa Stack e esconde os headers por padrão
   return (
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-      </Stack>
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }

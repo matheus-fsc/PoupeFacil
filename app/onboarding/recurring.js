@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import PrimaryButton from '../../src/components/PrimaryButton';
 import SelectionListItem from '../../src/components/SelectionList';
 
@@ -19,6 +20,7 @@ export const RECURRING_EXPENSES = [
 
 export default function RecurringScreen() {
     const router = useRouter();
+    const { completeOnboarding } = useAuth();
     const [selectedItems, setSelectedItems] = useState([]);
 
     const handleSelectItem = (id) => {
@@ -42,13 +44,12 @@ export default function RecurringScreen() {
 
     const handleSkip = async () => {
         try {
-            await AsyncStorage.setItem('onboarding_completed', 'true');
-            router.replace('/');
+            await completeOnboarding();
         } catch (e) {
             console.error("Falha ao pular onboarding", e);
+            Alert.alert("Erro", "Não foi possível pular esta etapa. Tente novamente.");
         }
     };
-
 
     return (
         <View style={styles.container}>
@@ -69,7 +70,6 @@ export default function RecurringScreen() {
             />
 
             <View style={styles.footer}>
-                {/* Usando o novo botão aqui! */}
                 <PrimaryButton
                     title={selectedItems.length > 0 ? `Adicionar ${selectedItems.length} Itens` : 'Finalizar'}
                     onPress={handleNextStep}
@@ -82,7 +82,6 @@ export default function RecurringScreen() {
     );
 }
 
-// O StyleSheet fica muito menor agora!
 const styles = StyleSheet.create({
     container: { flex: 1, padding: 20, backgroundColor: '#fff' },
     title: { fontSize: 26, fontWeight: 'bold', color: '#333', marginTop: 30, textAlign: 'center' },

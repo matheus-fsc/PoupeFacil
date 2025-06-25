@@ -1,4 +1,3 @@
-// Arquivo: app/onboarding/welcome.js (VERSÃO ESTILIZADA)
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';

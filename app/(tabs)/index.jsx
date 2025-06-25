@@ -144,7 +144,6 @@ export default function HomeScreen() {
   );
 }
 
-// Os estilos são os mesmos da tela de relatórios anterior
 const styles = StyleSheet.create({
     container: {
         flex: 1,

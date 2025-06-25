@@ -2,8 +2,8 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Updates from 'expo-updates';
 import React, { useState } from 'react';
 import { Alert, Platform, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
-import { clearAllData } from '../../src/services/storage'; // 1. Importa a função correta do nosso storage
-import { useAuth } from '../../context/AuthContext'; // Para resetar o onboarding sem recarregar
+import { clearAllData } from '../../src/services/storage'; 
+import { useAuth } from '../../context/AuthContext'; 
 
 export default function SettingsScreen() {
   const [isDevMode, setIsDevMode] = useState(false);

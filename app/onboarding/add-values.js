@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker'; // Importa o seletor de data
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useAuth } from '../../context/AuthContext';
 import { saveRecurringExpenses } from '../../src/services/storage';
 import { RECURRING_EXPENSES_DATA } from './recurring';
@@ -111,16 +111,15 @@ export default function AddValuesScreen() {
   const [currentValue, setCurrentValue] = useState('');
   const [customName, setCustomName] = useState('');
   const [extraValues, setExtraValues] = useState([]);
-  const [recurrenceDate, setRecurrenceDate] = useState(new Date()); // 1. Estado para a data
-  const [showDatePicker, setShowDatePicker] = useState(false); // Estado para controlar o seletor de data
-  
+  const [recurrenceDate, setRecurrenceDate] = useState(new Date()); 
+  const [showDatePicker, setShowDatePicker] = useState(false);  
   const valueInputRef = useRef(null);
 
   useEffect(() => {
     setCurrentValue('');
     setCustomName('');
     setExtraValues([]);
-    setRecurrenceDate(new Date()); // Reseta a data para a atual
+    setRecurrenceDate(new Date()); // reseta a data para a atual
     if (currentExpense && !currentExpense.isCustom) {
         setTimeout(() => valueInputRef.current?.focus(), 100);
     }
@@ -155,7 +154,7 @@ export default function AddValuesScreen() {
       ...currentExpense,
       totalValue: getTotal(),
       name: currentExpense.isCustom ? customName.trim() : currentExpense.name,
-      recurrenceDate: recurrenceDate.toISOString(), // 2. Adiciona a data ao objeto
+      recurrenceDate: recurrenceDate.toISOString(), 
     };
     goToNextExpense(updatedExpense);
   };
@@ -195,35 +194,110 @@ export default function AddValuesScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 20, backgroundColor: '#f8fafc', justifyContent: 'space-between' },
-    content: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    expenseName: { fontSize: 22, fontWeight: '600', color: '#1f2937', marginVertical: 16, textAlign: 'center' },
-    input: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, padding: 16, fontSize: 24, width: '100%', textAlign: 'center', marginBottom: 16, color: '#111827' },
-    button: { backgroundColor: '#10b981', padding: 16, borderRadius: 12, alignItems: 'center', width: '100%' },
-    buttonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-    totalText: { fontSize: 20, fontWeight: 'bold', color: '#1f2937', marginTop: 20, alignSelf: 'flex-end' },
-    extraValuesContainer: { width: '100%', backgroundColor: '#fff', borderRadius: 12, padding: 16, marginTop: 8, borderWidth: 1, borderColor: '#e5e7eb' },
-    extraValuesTitle: { fontSize: 16, fontWeight: 'bold', color: '#4b5563', marginBottom: 8 },
-    extraValueItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f3f4f6' },
-    extraValueText: { fontSize: 16, color: '#374151' },
-    removeButton: { padding: 4 },
-    addAnotherButton: { backgroundColor: '#fff', borderColor: '#d1d5db', borderWidth: 1, borderStyle: 'dashed', marginBottom: 20 },
-    buttonTextSecondary: { color: '#4b5563', fontWeight: '600' },
-    // 4. Estilos para a linha da data
-    dateRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#d1d5db',
-        borderRadius: 12,
-        padding: 16,
-        width: '100%',
-        marginBottom: 16,
-    },
-    dateText: {
-        fontSize: 16,
-        color: '#374151',
-        marginLeft: 12,
-    },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f8fafc',
+    justifyContent: 'space-between',
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  expenseName: {
+    fontSize: 22,
+    fontWeight: '600',
+    color: '#1f2937',
+    marginVertical: 16,
+    textAlign: 'center',
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 24,
+    width: '100%',
+    textAlign: 'center',
+    marginBottom: 16,
+    color: '#111827',
+  },
+  button: {
+    backgroundColor: '#10b981',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    width: '100%',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  totalText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    marginTop: 20,
+    alignSelf: 'flex-end',
+  },
+  extraValuesContainer: {
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  extraValuesTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#4b5563',
+    marginBottom: 8,
+  },
+  extraValueItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+  },
+  extraValueText: {
+    fontSize: 16,
+    color: '#374151',
+  },
+  removeButton: {
+    padding: 4,
+  },
+  addAnotherButton: {
+    backgroundColor: '#fff',
+    borderColor: '#d1d5db',
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    marginBottom: 20,
+  },
+  buttonTextSecondary: {
+    color: '#4b5563',
+    fontWeight: '600',
+  },
+  dateRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    padding: 16,
+    width: '100%',
+    marginBottom: 16,
+  },
+  dateText: {
+    fontSize: 16,
+    color: '#374151',
+    marginLeft: 12,
+  },
 });

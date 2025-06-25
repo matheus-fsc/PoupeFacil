@@ -90,7 +90,27 @@ Para executar este projeto localmente, siga os passos abaixo:
 
 A estrutura de ficheiros foi pensada para ser escalável e de fácil manutenção:
 
-PoupeFacil/├── app/                  # Contém todas as rotas e layouts do Expo Router│   ├── (tabs)/           # Grupo de rotas para as telas principais com Tab Bar│   │   ├── _layout.jsx│   │   ├── index.jsx│   │   ├── add.js│   │   ├── reports.js│   │   └── settings.js│   ├── onboarding/       # Grupo de rotas para o fluxo de onboarding│   ├── manual-form.js    # Tela modal para adicionar/editar transações│   ├── transaction-list.js # Tela modal para listar e gerir transações│   └── qr-scanner.js     # Tela modal para o leitor de QR Code├── assets/               # Imagens (ícone, splash), fontes e outros ficheiros estáticos├── src/│   ├── components/       # Componentes React reutilizáveis│   ├── context/          # Provedores de Contexto (AuthContext.js)│   └── services/         # Camada de serviços (storage.js)└── eas.json              # Configuração para builds com EAS└── package.json
+
+
+PoupeFacil/
+├── app/ # Contém todas as rotas e layouts do Expo Router
+│ ├── (tabs)/ # Grupo de rotas para as telas principais com Tab Bar
+│ │ ├── _layout.jsx
+│ │ ├── index.jsx
+│ │ ├── add.js
+│ │ ├── reports.js
+│ │ └── settings.js
+│ ├── onboarding/ # Grupo de rotas para o fluxo de onboarding
+│ ├── manual-form.js # Tela modal para adicionar/editar transações
+│ ├── transaction-list.js # Tela modal para listar e gerir transações
+│ └── qr-scanner.js # Tela modal para o leitor de QR Code
+├── assets/ # Imagens (ícone, splash), fontes e outros ficheiros estáticos
+├── src/
+│ ├── components/ # Componentes React reutilizáveis
+│ ├── context/ # Provedores de Contexto (AuthContext.js)
+│ └── services/ # Camada de serviços (storage.js)
+└── eas.json # Configuração para builds com EAS
+└── package.json
 ---
 
 ## 📜 Licença
@@ -104,3 +124,5 @@ Distribuído sob a licença MIT. Veja `LICENSE.txt` para mais informações.
 Matheus - [@matheus-fsc](https://github.com/matheus-fsc) - `matheusvgp29@gmail.com`
 
 Link do Projeto: [https://github.com/matheus-fsc/PoupeFacil](https://github.com/matheus-fsc/PoupeFacil)
+
+

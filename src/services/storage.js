@@ -26,16 +26,6 @@ export async function getTransactions() {
   }
 }
 
-export async function getUserProfile() {
-  try {
-    const jsonValue = await AsyncStorage.getItem(USER_PROFILE_KEY);
-    return jsonValue != null ? JSON.parse(jsonValue) : null;
-  } catch (e) {
-    console.error("Storage Error: Falha ao buscar perfil do usuário.", e);
-    return null;
-  }
-}
-
 // --- Setters ---
 
 export async function saveRecurringExpenses(expenses) {
@@ -52,20 +42,9 @@ export async function addTransaction(newTransaction) {
   try {
     const existingTransactions = await getTransactions();
     const updatedTransactions = [...existingTransactions, newTransaction];
-    const jsonValue = JSON.stringify(updatedTransactions);
-    await AsyncStorage.setItem(TRANSACTIONS_KEY, jsonValue);
+    await AsyncStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(updatedTransactions));
   } catch (e) {
     console.error("Storage Error: Falha ao adicionar transação.", e);
-    throw e;
-  }
-}
-
-export async function saveUserProfile(profileData) {
-  try {
-    const jsonValue = JSON.stringify(profileData);
-    await AsyncStorage.setItem(USER_PROFILE_KEY, jsonValue);
-  } catch (e) {
-    console.error("Storage Error: Falha ao salvar perfil do usuário.", e);
     throw e;
   }
 }
@@ -76,14 +55,12 @@ export async function updateTransaction(updatedTransaction) {
   try {
     const transactions = await getTransactions();
     const transactionIndex = transactions.findIndex(t => t.id === updatedTransaction.id);
-
-    if (transactionIndex === -1) {
-      throw new Error("Transação não encontrada para atualização.");
+    if (transactionIndex > -1) {
+      transactions[transactionIndex] = updatedTransaction;
+      await AsyncStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(transactions));
+    } else {
+      throw new Error("Transação manual não encontrada.");
     }
-
-    transactions[transactionIndex] = updatedTransaction;
-    const jsonValue = JSON.stringify(transactions);
-    await AsyncStorage.setItem(TRANSACTIONS_KEY, jsonValue);
   } catch (e) {
     console.error("Storage Error: Falha ao atualizar transação.", e);
     throw e;
@@ -94,23 +71,38 @@ export async function deleteTransaction(transactionId) {
   try {
     const transactions = await getTransactions();
     const updatedTransactions = transactions.filter(t => t.id !== transactionId);
-    const jsonValue = JSON.stringify(updatedTransactions);
-    await AsyncStorage.setItem(TRANSACTIONS_KEY, jsonValue);
+    await AsyncStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(updatedTransactions));
   } catch (e) {
     console.error("Storage Error: Falha ao deletar transação.", e);
     throw e;
   }
 }
 
-// --- Limpeza ---
-
-export async function clearAllData() {
+export async function updateRecurringExpense(updatedExpense) {
   try {
-    const keys = [RECURRING_EXPENSES_KEY, TRANSACTIONS_KEY, USER_PROFILE_KEY];
-    await AsyncStorage.multiRemove(keys);
-    console.log("Todos os dados do app foram limpos do AsyncStorage.");
+    const expenses = await getRecurringExpenses();
+    const expenseIndex = expenses.findIndex(e => e.id === updatedExpense.id);
+    if (expenseIndex > -1) {
+      // Atualiza os campos relevantes
+      expenses[expenseIndex].name = updatedExpense.description;
+      expenses[expenseIndex].totalValue = updatedExpense.amount;
+      await AsyncStorage.setItem(RECURRING_EXPENSES_KEY, JSON.stringify(expenses));
+    } else {
+      throw new Error("Despesa recorrente não encontrada.");
+    }
   } catch (e) {
-    console.error("Storage Error: Falha ao limpar todos os dados.", e);
+    console.error("Storage Error: Falha ao atualizar despesa recorrente.", e);
+    throw e;
+  }
+}
+
+export async function deleteRecurringExpense(expenseId) {
+  try {
+    const expenses = await getRecurringExpenses();
+    const updatedExpenses = expenses.filter(e => e.id !== expenseId);
+    await AsyncStorage.setItem(RECURRING_EXPENSES_KEY, JSON.stringify(updatedExpenses));
+  } catch (e) {
+    console.error("Storage Error: Falha ao deletar despesa recorrente.", e);
     throw e;
   }
 }

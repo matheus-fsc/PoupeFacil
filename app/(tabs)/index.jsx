@@ -1,148 +1,245 @@
-// Arquivo: app/(tabs)/index.jsx
-
+import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from 'expo-router';
-import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { getRecurringExpenses } from '../../src/services/storage'; // Importe a função de busca
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { getRecurringExpenses, getTransactions } from '../../src/services/storage';
+
+// --- Componentes reutilizados da tela de relatórios ---
+
+const SummaryCard = ({ title, value, color, icon, style }) => (
+  <View style={[styles.summaryCard, style]}>
+    <Ionicons name={icon} size={24} color={color} />
+    <View style={styles.summaryTextContainer}>
+      <Text style={styles.summaryTitle}>{title}</Text>
+      <Text style={[styles.summaryValue, { color }]}>{value}</Text>
+    </View>
+  </View>
+);
+
+const TransactionItem = ({ item }) => {
+  const isExpense = item.type === 'expense';
+  const amountColor = isExpense ? '#ef4444' : '#10b981';
+  const amountSign = isExpense ? '- ' : '+ ';
+
+  const formatCurrency = (valueInCents) => {
+    return (valueInCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  };
+
+  return (
+    <View style={styles.transactionItem}>
+      <View style={[styles.transactionIconContainer, { backgroundColor: isExpense ? '#fee2e2' : '#dcfce7' }]}>
+        <Ionicons 
+            name={isExpense ? 'arrow-down-outline' : 'arrow-up-outline'} 
+            size={24} 
+            color={amountColor} />
+      </View>
+      <View style={styles.transactionDetails}>
+        <Text style={styles.transactionDescription}>{item.description}</Text>
+        <Text style={styles.transactionCategory}>{item.category}</Text>
+      </View>
+      <Text style={[styles.transactionAmount, { color: amountColor }]}>
+        {amountSign}{formatCurrency(item.amount)}
+      </Text>
+    </View>
+  );
+};
+
 
 export default function HomeScreen() {
-  const [recurringExpenses, setRecurringExpenses] = useState([]);
-  const [totalMonthly, setTotalMonthly] = useState(0);
+  const [summary, setSummary] = useState({ income: 0, totalExpenses: 0, fixedExpenses: 0, variableExpenses: 0, balance: 0 });
+  const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // useFocusEffect é um hook que roda toda vez que a tela entra em foco.
-  // É melhor que o useEffect para garantir que os dados estejam sempre atualizados.
   useFocusEffect(
     useCallback(() => {
-      async function loadData() {
+      const loadData = async () => {
         setIsLoading(true);
-        const expenses = await getRecurringExpenses();
-        setRecurringExpenses(expenses);
+        
+        const manualTransactions = await getTransactions();
+        const recurring = await getRecurringExpenses();
 
-        // Calcula o total mensal
-        const total = expenses.reduce((sum, item) => sum + item.totalValue, 0);
-        setTotalMonthly(total / 100); // Converte de centavos para reais
+        let totalIncome = 0;
+        let totalVariableExpenses = 0;
 
+        manualTransactions.forEach(t => {
+          if (t.type === 'income') {
+            totalIncome += t.amount;
+          } else {
+            totalVariableExpenses += t.amount;
+          }
+        });
+
+        const totalFixedExpenses = recurring.reduce((sum, r) => sum + r.totalValue, 0);
+        const totalExpenses = totalFixedExpenses + totalVariableExpenses;
+
+        setSummary({
+          income: totalIncome,
+          totalExpenses: totalExpenses,
+          fixedExpenses: totalFixedExpenses,
+          variableExpenses: totalVariableExpenses,
+          balance: totalIncome - totalExpenses,
+        });
+
+        setTransactions(manualTransactions.sort((a, b) => new Date(b.date) - new Date(a.date)));
+        
         setIsLoading(false);
-      }
+      };
 
       loadData();
     }, [])
   );
 
-  const formatCurrency = (value) => {
-    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const formatCurrency = (valueInCents) => {
+    return (valueInCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Text>Carregando seus dados...</Text>
-      </SafeAreaView>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#10b981" />
+      </View>
     );
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.greeting}>Olá, Matheus!</Text>
-        <Text style={styles.title}>Resumo Mensal</Text>
-      </View>
+        <FlatList
+            ListHeaderComponent={
+                <>
+                    <Text style={styles.title}>Resumo do Mês</Text>
+                    
+                    {/* Cards de Resumo Geral */}
+                    <View style={styles.summaryContainer}>
+                        <SummaryCard title="Ganhos" value={formatCurrency(summary.income)} color="#10b981" icon="trending-up-outline" style={{flex: 1}}/>
+                        <View style={{width: 16}} />
+                        <SummaryCard title="Gastos" value={formatCurrency(summary.totalExpenses)} color="#ef4444" icon="trending-down-outline" style={{flex: 1}}/>
+                    </View>
+                    <View style={[styles.summaryCard, styles.balanceCard]}>
+                        <Text style={styles.summaryTitle}>Saldo Atual</Text>
+                        <Text style={[styles.summaryValue, {fontSize: 22, color: summary.balance >= 0 ? '#1f2937' : '#ef4444'}]}>{formatCurrency(summary.balance)}</Text>
+                    </View>
 
-      <View style={styles.summaryCard}>
-        <Text style={styles.summaryLabel}>Total de Despesas Fixas</Text>
-        <Text style={styles.summaryValue}>{formatCurrency(totalMonthly)}</Text>
-        <Text style={styles.summarySubtext}>Este é o valor base dos seus gastos recorrentes por mês.</Text>
-      </View>
-
-      <Text style={styles.listHeader}>Suas Despesas Recorrentes</Text>
-      <FlatList
-        data={recurringExpenses}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.expenseItem}>
-            <Text style={styles.expenseName}>{item.customName || item.name}</Text>
-            <Text style={styles.expenseValue}>{formatCurrency(item.totalValue / 100)}</Text>
-          </View>
-        )}
-        ListEmptyComponent={<Text style={styles.emptyText}>Você ainda não adicionou despesas.</Text>}
-      />
+                    {/* Seção de Análise de Gastos */}
+                    <Text style={styles.listHeader}>Análise dos Gastos</Text>
+                    <View style={styles.summaryContainer}>
+                        <SummaryCard title="Gastos Fixos" value={formatCurrency(summary.fixedExpenses)} color="#8b5cf6" icon="receipt-outline" style={{flex: 1}}/>
+                        <View style={{width: 16}} />
+                        <SummaryCard title="Gastos Variáveis" value={formatCurrency(summary.variableExpenses)} color="#f97316" icon="cart-outline" style={{flex: 1}}/>
+                    </View>
+                    
+                    {/* Lista de Transações Recentes */}
+                    <Text style={styles.listHeader}>Histórico de Transações</Text>
+                </>
+            }
+            data={transactions}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <TransactionItem item={item} />}
+            ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>Nenhuma transação manual registrada ainda.</Text>
+            </View>
+            }
+        />
     </SafeAreaView>
   );
 }
 
+// Os estilos são os mesmos da tela de relatórios anterior
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8fafc',
-    padding: 20,
-  },
-  header: {
-    marginBottom: 24,
-  },
-  greeting: {
-    fontSize: 18,
-    color: '#4b5563',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#111827',
-  },
-  summaryCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  summaryLabel: {
-    fontSize: 16,
-    color: '#4b5563',
-    marginBottom: 8,
-  },
-  summaryValue: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#10b981',
-  },
-  summarySubtext: {
-    fontSize: 14,
-    color: '#6b7280',
-    marginTop: 8,
-  },
-  listHeader: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#1f2937',
-    marginBottom: 16,
-  },
-  expenseItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 12,
-  },
-  expenseName: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#374151',
-  },
-  expenseValue: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#10b981',
-  },
-  emptyText: {
-    textAlign: 'center',
-    marginTop: 20,
-    color: '#6b7280',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#f8fafc',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f8fafc',
+    },
+    title: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        color: '#111827',
+        marginBottom: 24,
+        paddingHorizontal: 20,
+        paddingTop: 20,
+    },
+    summaryContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 16,
+        paddingHorizontal: 20,
+    },
+    summaryCard: {
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        padding: 16,
+        borderWidth: 1,
+        borderColor: '#e5e7eb',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    balanceCard: {
+        justifyContent: 'space-between',
+        paddingVertical: 20,
+        marginHorizontal: 20,
+    },
+    summaryTextContainer: {
+        marginLeft: 12,
+        flexShrink: 1,
+    },
+    summaryTitle: {
+        fontSize: 14,
+        color: '#6b7280',
+    },
+    summaryValue: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    listHeader: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#1f2937',
+        marginTop: 24,
+        marginBottom: 16,
+        paddingHorizontal: 20,
+    },
+    transactionItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        padding: 12,
+        borderRadius: 12,
+        marginBottom: 12,
+        marginHorizontal: 20,
+    },
+    transactionIconContainer: {
+        padding: 10,
+        borderRadius: 999, // Círculo
+    },
+    transactionDetails: {
+        flex: 1,
+        marginLeft: 12,
+    },
+    transactionDescription: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    transactionCategory: {
+        fontSize: 12,
+        color: '#6b7280',
+    },
+    transactionAmount: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    emptyContainer: {
+        padding: 40,
+        alignItems: 'center',
+    },
+    emptyText: {
+        fontSize: 16,
+        color: '#6b7280',
+    },
 });
+

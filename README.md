@@ -1,50 +1,116 @@
-# Welcome to your Expo app 👋
+# PoupeFácil 🐷💰
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Expo: 51](https://img.shields.io/badge/Expo-~51-blueviolet.svg)
+![Works with Expo Go](https://img.shields.io/badge/Runs%20with%20Expo%20Go-✅-white.svg)
 
-## Get started
+Um aplicativo de finanças pessoais focado em simplicidade e uma experiência de usuário limpa, construído com React Native e Expo.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 📖 Tabela de Conteúdos
 
-2. Start the app
+* [Sobre o Projeto](#-sobre-o-projeto)
+* [✨ Funcionalidades](#-funcionalidades)
+* [🛠️ Tecnologias Utilizadas](#-tecnologias-utilizadas)
+* [🚀 Começando](#-começando)
+* [📁 Estrutura de Arquivos](#-estrutura-de-arquivos)
+* [📜 Licença](#-licença)
+* [📫 Contato](#-contato)
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🎯 Sobre o Projeto
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+O **PoupeFácil** nasceu da necessidade de ter um controle financeiro rápido e descomplicado, diretamente no celular. O aplicativo guia o usuário por um processo de configuração inicial (`onboarding`) para cadastrar suas despesas recorrentes e, a partir daí, oferece uma visão clara de seus gastos mensais.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Toda a persistência de dados é feita localmente através do `AsyncStorage`, garantindo que o app seja leve, rápido e compatível com o Expo Go, com planos futuros de sincronização com uma API na nuvem.
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## ✨ Funcionalidades
 
-```bash
-npm run reset-project
+- **Fluxo de Onboarding Guiado**: Uma experiência limpa para o usuário configurar suas finanças pela primeira vez.
+- **Gerenciamento de Despesas Recorrentes**: Cadastro fácil de contas fixas e assinaturas.
+- **Persistência de Dados Local**: Utiliza `AsyncStorage` para salvar os dados de forma segura no dispositivo.
+- **Navegação Moderna**: Construído com `expo-router`, com separação de layouts para onboarding e o app principal.
+- **Gerenciamento de Estado Global**: Utiliza a Context API do React para um controle de estado fluido e sem recarregamentos desnecessários.
+- **Arquitetura Escalável**: Código organizado em camadas de serviços, componentes reutilizáveis e contextos.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+Este projeto foi construído com as seguintes tecnologias:
+
+* **[React Native](https://reactnative.dev/)**: Framework para desenvolvimento de aplicativos móveis nativos.
+* **[Expo](https://expo.dev/)**: Plataforma e conjunto de ferramentas para facilitar o desenvolvimento com React Native.
+* **[Expo Router](https://docs.expo.dev/router/introduction/)**: Sistema de roteamento baseado em arquivos para navegação.
+* **[React Context API](https://react.dev/learn/passing-data-deeply-with-context)**: Para gerenciamento de estado global.
+* **[AsyncStorage](https://react-native-async-storage.github.io/async-storage/)**: Para persistência de dados local (chave-valor).
+
+---
+
+## 🚀 Começando
+
+Para executar este projeto localmente, siga os passos abaixo:
+
+1.  **Clone o repositório**
+    ```bash
+    git clone [https://github.com/matheus-fsc/PoupeFacil.git](https://github.com/matheus-fsc/PoupeFacil.git)
+    ```
+2.  **Navegue até o diretório do projeto**
+    ```bash
+    cd PoupeFacil
+    ```
+3.  **Instale as dependências**
+    ```bash
+    npm install
+    ```
+    _ou se você usa Yarn:_
+    ```bash
+    yarn install
+    ```
+4.  **Inicie o servidor de desenvolvimento do Expo**
+    ```bash
+    npx expo start
+    ```
+5.  **Execute no seu dispositivo**: Escaneie o QR Code com o aplicativo Expo Go (disponível para [Android](https://play.google.com/store/apps/details?id=host.exp.exponent) e [iOS](https://apps.apple.com/us/app/expo-go/id982107779)).
+
+---
+
+## 📁 Estrutura de Arquivos
+
+A estrutura de arquivos foi pensada para ser escalável e de fácil manutenção:
+
+```
+PoupeFacil/
+├── app/                  # Contém todas as rotas e layouts do Expo Router
+│   ├── (tabs)/           # Grupo de rotas para as telas principais com Tab Bar
+│   │   ├── _layout.jsx
+│   │   └── index.jsx
+│   └── onboarding/       # Grupo de rotas para o fluxo de onboarding
+│       ├── _layout.jsx
+│       └── welcome.js
+├── assets/               # Imagens, fontes e outros arquivos estáticos
+├── components/           # Componentes React reutilizáveis (ex: PrimaryButton.js)
+├── context/              # Provedores de Contexto (ex: AuthContext.js)
+├── services/             # Camada de serviços (ex: storage.js para interagir com AsyncStorage)
+└── package.json
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 📜 Licença
 
-To learn more about developing your project with Expo, look at the following resources:
+Distribuído sob a licença MIT. Veja `LICENSE.txt` para mais informações.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+*(Você pode criar um arquivo `LICENSE.txt` na raiz do projeto e colar o texto da licença MIT nele)*
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 📫 Contato
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Matheus - [@matheus-fsc](https://github.com/matheus-fsc) - `matheusvgp29@gmail.com`
+
+Link do Projeto: [https://github.com/matheus-fsc/PoupeFacil](https://github.com/matheus-fsc/PoupeFacil)

@@ -21,7 +21,7 @@ export default function TabsLayout() {
           }
           
           if (!iconName) {
-            return null; // Não mostra ícone para rotas não mapeadas.
+            return null; 
           }
           
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -37,7 +37,6 @@ export default function TabsLayout() {
         }
       })}
     >
-      {/* A ordem das telas aqui DEFINE a ordem visual das abas. */}
       <Tabs.Screen name="index" options={{ title: 'Início' }} />
       <Tabs.Screen name="add" options={{ title: 'Adicionar' }} />
       <Tabs.Screen name="report" options={{ title: 'Relatórios' }} />

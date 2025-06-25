@@ -117,60 +117,61 @@ export default function ReportsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Text style={styles.title}>Relatórios</Text>
+        <>
+          <Text style={styles.title}>Relatórios</Text>
 
-        {/* Seletor de Período */}
-        <View style={styles.periodSelector}>
+          {/* Seletor de Período */}
+          <View style={styles.periodSelector}>
             <TouchableOpacity onPress={() => setPeriod('monthly')} style={[styles.periodButton, period === 'monthly' && styles.periodButtonActive]}>
-                <Text style={[styles.periodText, period === 'monthly' && styles.periodTextActive]}>Este Mês</Text>
+              <Text style={[styles.periodText, period === 'monthly' && styles.periodTextActive]}>Este Mês</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setPeriod('quarterly')} style={[styles.periodButton, period === 'quarterly' && styles.periodButtonActive]}>
-                <Text style={[styles.periodText, period === 'quarterly' && styles.periodTextActive]}>Últimos 90 dias</Text>
+              <Text style={[styles.periodText, period === 'quarterly' && styles.periodTextActive]}>Últimos 90 dias</Text>
             </TouchableOpacity>
-        </View>
+          </View>
 
-        {/* Gráfico de Barras: Ganhos vs Gastos */}
-        <View style={styles.card}>
+          {/* Gráfico de Barras: Ganhos vs Gastos */}
+          <View style={styles.card}>
             <Text style={styles.chartTitle}>Ganhos vs. Gastos</Text>
             <BarChart
-                data={reportData.barChart}
-                width={screenWidth - 40} // Usa a largura total do card
-                height={220}
-                yAxisLabel="R$"
-                chartConfig={chartConfig}
-                fromZero
-                showValuesOnTopOfBars
-                style={styles.chartStyle}
+              data={reportData.barChart}
+              width={screenWidth - 40}
+              height={220}
+              yAxisLabel="R$"
+              chartConfig={chartConfig}
+              fromZero
+              showValuesOnTopOfBars
+              style={styles.chartStyle}
             />
-        </View>
+          </View>
 
-        {/* Gráfico de Pizza: Distribuição de Gastos */}
-        <View style={styles.card}>
+          {/* Gráfico de Pizza: Distribuição de Gastos */}
+          <View style={styles.card}>
             <Text style={styles.chartTitle}>Distribuição de Gastos</Text>
             {reportData.pieChart.length > 0 ? (
-                <>
-                    <View style={{ marginLeft: -15 }}>
-                        <PieChart
-                            data={reportData.pieChart}
-                            width={screenWidth - 40}
-                            height={220}
-                            chartConfig={chartConfig}
-                            accessor={"population"}
-                            backgroundColor={"transparent"}
-                            paddingLeft={"15"} // Aumentado para centralizar
-                            hasLegend={true}
-                        />
-                    </View>
-                    <ChartLegend data={reportData.pieChart.map(item => ({
-                        category: item.name,
-                        valueFormatted: (item.population/100).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'}),
-                        color: item.color
-                    }))} />
-                </>
+              <>
+                <PieChart
+                  data={reportData.pieChart}
+                  width={screenWidth - 120}
+                  height={220}
+                  chartConfig={chartConfig}
+                  accessor={"population"}
+                  backgroundColor={"transparent"}
+                  paddingLeft={"16"}
+                  hasLegend={true}
+                  style={{ alignSelf: 'center' }}
+                />
+                <ChartLegend data={reportData.pieChart.map(item => ({
+                  category: item.name,
+                  valueFormatted: (item.population/100).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'}),
+                  color: item.color
+                }))} />
+              </>
             ) : (
-                <Text style={styles.emptyText}>Sem dados de gastos neste período.</Text>
+              <Text style={styles.emptyText}>Sem dados de gastos neste período.</Text>
             )}
-        </View>
+          </View>
+        </>
       </ScrollView>
     </SafeAreaView>
   );
